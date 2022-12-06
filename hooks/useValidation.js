@@ -11,12 +11,13 @@ const useValidation = ( initialState, validate, fn ) => {
         if ( submitForm ) {
             const noErrors = Object.keys(errors).length === 0;
             if ( noErrors ) {
-                fn(); /* funcion que ejecuta el componente */
+                fn();
+                /* funcion que ejecuta el componente */
             }
             setErrors( false );
         }
         //eslint-disable-next-line
-    }, [errors] );
+    }, [] );
 
     /* Funcion que se ejecuta conforme el usuario escribe algo */
     const handleChange = e => {
@@ -36,12 +37,20 @@ const useValidation = ( initialState, validate, fn ) => {
     }
 
 
+    // cuando se realiza el evento de blur
+    const handleBlur = () => {
+        const validationErrors = validate( values );
+        setErrors( validationErrors );
+    }
+
+
     return {
         values,
         errors,
         submitForm,
         handleChange,
-        handleSubmit
+        handleSubmit,
+        handleBlur
     };
 }
 

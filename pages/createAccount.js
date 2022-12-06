@@ -7,16 +7,15 @@ import useValidation from '../hooks/useValidation';
 import validateCreateAccount from '../validation/validateCreateAccount';
 
 
-
-const CreateAccount = () => {
-
-    const INITIAL_STATE = {
+const INITIAL_STATE = {
         name: '',
         email: '',
         password: ''
     }
 
-    const { values, errors, submitForm, handleChange, handleSubmit } = useValidation( INITIAL_STATE, validateCreateAccount, createAccount );
+const CreateAccount = () => {
+
+    const { values, errors, submitForm, handleChange, handleSubmit, handleBlur } = useValidation( INITIAL_STATE, validateCreateAccount, createAccount );
     
     const { name, email, password } = values;
     
@@ -30,7 +29,8 @@ const CreateAccount = () => {
             <>
                 <h1 className='create-account-title text-center'>Crear Cuenta</h1>
                     <form
-                    onSubmit={handleSubmit}
+                        onSubmit={handleSubmit}
+                        
                     >
                     <div className='form-field'>
                         <label htmlFor="name">Nombre</label>
@@ -41,8 +41,11 @@ const CreateAccount = () => {
                             name='name'
                             value={name}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                         />
                     </div>
+                        
+                    {errors.name && <div className='error-message text-center'>{errors.name}</div>}
 
                     <div className='form-field'>
                         <label htmlFor="email">Email</label>
@@ -53,8 +56,11 @@ const CreateAccount = () => {
                             name='email'
                             value={email}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                         />
                     </div>
+                        
+                    {errors.email && <div className='error-message text-center'>{errors.email}</div>}
 
                     <div className='form-field'>
                         <label htmlFor="password">Password</label>
@@ -65,8 +71,11 @@ const CreateAccount = () => {
                             name='password'
                             value={password}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                         />
                     </div>
+                        
+                    {errors.name && <div className='error-message text-center'>{errors.name}</div>}
 
                     <input className='form-btn' type="submit"
                             value='Crear Cuenta'

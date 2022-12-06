@@ -20,4 +20,6 @@ export default function validateCreateAccount( values ) {
         errors.password = "El password debe contener por lo menos 6 caracteres";
     }
 
+    return errors;
+
 }
