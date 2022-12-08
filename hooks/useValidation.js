@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const useValidation = (initialState, validate, fn) => {
   const [values, setValues] = useState(initialState);
@@ -8,9 +8,9 @@ const useValidation = (initialState, validate, fn) => {
   useEffect(() => {
     if (submitForm) {
       const noErrors = Object.keys(errors).length === 0;
+
       if (noErrors) {
-        fn();
-        /* funcion que ejecuta el componente */
+        fn(); /* funcion que ejecuta el componente */
       }
       setSubmitForm(false);
     }

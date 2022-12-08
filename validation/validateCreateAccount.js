@@ -11,8 +11,8 @@ export default function validateCreateAccount(values) {
     errors.email = "El email es obligatorio";
   } else if (
     !(
-      //validation
-      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z](2,)$/i.test(values.email)
+      // regex validation
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.email)
     )
   ) {
     errors.email = "Email no valido";
@@ -25,8 +25,8 @@ export default function validateCreateAccount(values) {
     errors.password = "El password debe contener por lo menos 6 caracteres";
   }
   console.log(
-    values.email,
-    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z](2,)$/i.test(values.email)
+    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.email)
   );
+
   return errors;
 }

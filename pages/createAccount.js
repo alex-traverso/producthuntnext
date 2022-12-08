@@ -18,13 +18,17 @@ const CreateAccount = () => {
 
   const { values, errors, handleChange, handleSubmit, handleBlur } =
     useValidation(INITIAL_STATE, validateCreateAccount, createAccount);
+
   const { name, email, password } = values;
 
   async function createAccount() {
     try {
       await firebase.register(name, email, password);
     } catch (error) {
-      console.error("Hubo un error al crear el usuario: ", error.message);
+      console.log(
+        "Hubo un error al crear el usuario",
+        error.localizedDescription
+      );
       setError(error.message);
     }
   }
@@ -34,7 +38,7 @@ const CreateAccount = () => {
       <Layout>
         <>
           <h1 className="create-account-title text-center">Crear Cuenta</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="form-field">
               <label htmlFor="name">Nombre</label>
               <input
@@ -85,6 +89,7 @@ const CreateAccount = () => {
             {errors.password && (
               <div className="error-message text-center">{errors.password}</div>
             )}
+
             {error && <div className="error-message text-center">{error}</div>}
 
             <input className="form-btn" type="submit" value="Crear Cuenta" />
