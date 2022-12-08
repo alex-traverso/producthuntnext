@@ -15,7 +15,7 @@ const INITIAL_STATE = {
 
 const CreateAccount = () => {
 
-    const { values, errors, submitForm, handleChange, handleSubmit, handleBlur } = useValidation( INITIAL_STATE, validateCreateAccount, createAccount );
+    const { values, errors, handleChange, handleSubmit, handleBlur } = useValidation( INITIAL_STATE, validateCreateAccount, createAccount );
     
     const { name, email, password } = values;
     

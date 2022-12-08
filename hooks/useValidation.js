@@ -47,7 +47,6 @@ const useValidation = ( initialState, validate, fn ) => {
     return {
         values,
         errors,
-        submitForm,
         handleChange,
         handleSubmit,
         handleBlur
