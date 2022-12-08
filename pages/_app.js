@@ -1,19 +1,18 @@
-import App from 'next/app';
-import firebase, { FirebaseContext } from '../firebase';
+import App from "next/app";
+import firebase, { FirebaseContext } from "../firebase";
 
 const MyApp = (props) => {
-
   const { Component, pageProps } = props;
 
   return (
     <FirebaseContext.Provider
       value={{
-        firebase
+        firebase,
       }}
     >
       <Component {...pageProps} />
     </FirebaseContext.Provider>
-  )
-}
+  );
+};
 
-export default MyApp
+export default MyApp;
