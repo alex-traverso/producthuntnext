@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/layout/Layout";
-
+import Router from "next/router";
 import firebase from "../firebase";
 
 // validaciones
@@ -24,11 +24,9 @@ const CreateAccount = () => {
   async function createAccount() {
     try {
       await firebase.register(name, email, password);
+      Router.push("/");
     } catch (error) {
-      console.log(
-        "Hubo un error al crear el usuario",
-        error.localizedDescription
-      );
+      console.log("Hubo un error al crear el usuario", error.message);
       setError(error.message);
     }
   }
@@ -37,15 +35,15 @@ const CreateAccount = () => {
     <div>
       <Layout>
         <>
-          <h1 className="create-account-title text-center">Crear Cuenta</h1>
+          <h1 className='create-account-title text-center'>Crear Cuenta</h1>
           <form onSubmit={handleSubmit} noValidate>
-            <div className="form-field">
-              <label htmlFor="name">Nombre</label>
+            <div className='form-field'>
+              <label htmlFor='name'>Nombre</label>
               <input
-                type="text"
-                id="name"
-                placeholder="Tu nombre"
-                name="name"
+                type='text'
+                id='name'
+                placeholder='Tu nombre'
+                name='name'
                 value={name}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -53,16 +51,16 @@ const CreateAccount = () => {
             </div>
 
             {errors.name && (
-              <div className="error-message text-center">{errors.name}</div>
+              <div className='error-message text-center'>{errors.name}</div>
             )}
 
-            <div className="form-field">
-              <label htmlFor="email">Email</label>
+            <div className='form-field'>
+              <label htmlFor='email'>Email</label>
               <input
-                type="email"
-                id="email"
-                placeholder="Tu email"
-                name="email"
+                type='email'
+                id='email'
+                placeholder='Tu email'
+                name='email'
                 value={email}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -70,16 +68,16 @@ const CreateAccount = () => {
             </div>
 
             {errors.email && (
-              <div className="error-message text-center">{errors.email}</div>
+              <div className='error-message text-center'>{errors.email}</div>
             )}
 
-            <div className="form-field">
-              <label htmlFor="password">Password</label>
+            <div className='form-field'>
+              <label htmlFor='password'>Password</label>
               <input
-                type="password"
-                id="password"
-                placeholder="Tu Password"
-                name="password"
+                type='password'
+                id='password'
+                placeholder='Tu Password'
+                name='password'
                 value={password}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -87,12 +85,12 @@ const CreateAccount = () => {
             </div>
 
             {errors.password && (
-              <div className="error-message text-center">{errors.password}</div>
+              <div className='error-message text-center'>{errors.password}</div>
             )}
 
-            {error && <div className="error-message text-center">{error}</div>}
+            {error && <div className='error-message text-center'>{error}</div>}
 
-            <input className="form-btn" type="submit" value="Crear Cuenta" />
+            <input className='form-btn' type='submit' value='Crear Cuenta' />
           </form>
         </>
       </Layout>
