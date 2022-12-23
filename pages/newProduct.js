@@ -9,8 +9,10 @@ import validateCreateAccount from "../validation/validateCreateAccount";
 
 const INITIAL_STATE = {
   name: "",
-  email: "",
-  password: "",
+  company: "",
+  image: "",
+  url: "",
+  description: "",
 };
 
 const NewProduct = () => {
@@ -19,7 +21,7 @@ const NewProduct = () => {
   const { values, errors, handleChange, handleSubmit, handleBlur } =
     useValidation(INITIAL_STATE, validateCreateAccount, createAccount);
 
-  const { name, email, password } = values;
+  const { name, company, image, url, description } = values;
 
   async function createAccount() {
     try {
@@ -40,60 +42,93 @@ const NewProduct = () => {
         <>
           <h1 className='create-account-title text-center'>Nuevo Producto</h1>
           <form onSubmit={handleSubmit} noValidate>
-            <div className='form-field'>
-              <label htmlFor='name'>Nombre</label>
-              <input
-                type='text'
-                id='name'
-                placeholder='Tu nombre'
-                name='name'
-                value={name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div>
+            <fieldset>
+              <legend>Informacion general</legend>
+              <div className='form-field'>
+                <label htmlFor='name'>Nombre</label>
+                <input
+                  type='text'
+                  id='name'
+                  placeholder='Tu nombre'
+                  name='name'
+                  value={name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </div>
+              {errors.name ? (
+                <div className='error-message text-center'>{errors.name}</div>
+              ) : null}
+              <div className='form-field'>
+                <label htmlFor='company'>Empresa</label>
+                <input
+                  type='text'
+                  id='company'
+                  placeholder='Nombre empresa o compañía'
+                  name='company'
+                  value={company}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </div>
+              {errors.company ? (
+                <div className='error-message text-center'>
+                  {errors.company}
+                </div>
+              ) : null}
+              <div className='form-field'>
+                <label htmlFor='image'>Imagen</label>
+                <input
+                  type='file'
+                  id='image'
+                  name='image'
+                  value={image}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </div>
+              {errors.image ? (
+                <div className='error-message text-center'>{errors.image}</div>
+              ) : null}
+              <div className='form-field'>
+                <label htmlFor='url'>URL</label>
+                <input
+                  type='url'
+                  id='url'
+                  name='url'
+                  value={url}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </div>
+              {errors.url ? (
+                <div className='error-message text-center'>{errors.url}</div>
+              ) : null}
+            </fieldset>
 
-            {errors.name && (
-              <div className='error-message text-center'>{errors.name}</div>
-            )}
+            <fieldset>
+              <legend>Sobre el producto</legend>
+              <div className='form-field'>
+                <label htmlFor='description'>Descripción</label>
+                <textarea
+                  id='description'
+                  name='description'
+                  value={description}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </div>
 
-            <div className='form-field'>
-              <label htmlFor='email'>Email</label>
-              <input
-                type='email'
-                id='email'
-                placeholder='Tu email'
-                name='email'
-                value={email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div>
+              {errors.url ? (
+                <div className='error-message text-center'>{errors.url}</div>
+              ) : null}
+            </fieldset>
 
-            {errors.email && (
-              <div className='error-message text-center'>{errors.email}</div>
-            )}
+            {error ? (
+              <div className='error-message text-center'>{error}</div>
+            ) : null}
 
-            <div className='form-field'>
-              <label htmlFor='password'>Password</label>
-              <input
-                type='password'
-                id='password'
-                placeholder='Tu Password'
-                name='password'
-                value={password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div>
-
-            {errors.password && (
-              <div className='error-message text-center'>{errors.password}</div>
-            )}
-
-            {error && <div className='error-message text-center'>{error}</div>}
-
-            <input className='form-btn' type='submit' value='Crear Cuenta' />
+            <input className='form-btn' type='submit' value='Crear Producto' />
           </form>
         </>
       </Layout>

@@ -185,9 +185,14 @@ form {
   font-size: 1.8rem;
 }
 
-.form-field > input {
+.form-field > input,
+textarea {
   flex: 1;
   padding: 1rem;
+}
+
+.form-field > textarea {
+  height: 250px;
 }
 
 .form-btn {
