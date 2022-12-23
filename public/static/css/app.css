@@ -168,6 +168,12 @@ nav a:last-of-type {
   margin-top: 5rem;
 }
 
+fieldset {
+  margin: 2rem 0;
+  border: 1px solid #e1e1e1;
+  padding: 2rem;
+}
+
 form {
   max-width: 600px;
   width: 95%;

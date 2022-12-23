@@ -5,7 +5,7 @@ import firebase from "../firebase";
 
 // validaciones
 import useValidation from "../hooks/useValidation";
-import validateCreateAccount from "../validation/validateCreateAccount";
+import validateCreateProduct from "../validation/validateCreateProduct";
 
 const INITIAL_STATE = {
   name: "",
@@ -19,7 +19,7 @@ const NewProduct = () => {
   const [error, setError] = useState(false);
 
   const { values, errors, handleChange, handleSubmit, handleBlur } =
-    useValidation(INITIAL_STATE, validateCreateAccount, createAccount);
+    useValidation(INITIAL_STATE, validateCreateProduct, createAccount);
 
   const { name, company, image, url, description } = values;
 
@@ -119,8 +119,10 @@ const NewProduct = () => {
                 />
               </div>
 
-              {errors.url ? (
-                <div className='error-message text-center'>{errors.url}</div>
+              {errors.description ? (
+                <div className='error-message text-center'>
+                  {errors.description}
+                </div>
               ) : null}
             </fieldset>
 
