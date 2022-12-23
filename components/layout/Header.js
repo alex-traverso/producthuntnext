@@ -26,7 +26,7 @@ const Header = () => {
               <Button
                 type='button'
                 bgColor='true'
-                signOut={() => firebase.signOut()}
+                onClick={() => firebase.signOut()}
               >
                 Cerrar sesion
               </Button>

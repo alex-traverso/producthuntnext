@@ -8,7 +8,7 @@ const Navigation = () => {
     <nav>
       <Link href='/'>Inicio</Link>
       <Link href='/populars'>Populares</Link>
-      {user && <Link href='/newProduct'>Nuevo producto</Link>}
+      {user ? <Link href='/newProduct'>Nuevo producto</Link> : null}
     </nav>
   );
 };

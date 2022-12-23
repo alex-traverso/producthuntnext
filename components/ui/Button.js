@@ -2,8 +2,8 @@ import React from "react";
 
 const Button = (props) => {
   return (
-    <button
-      onClick={props.signOut}
+    <a
+      onClick={props.onClick}
       className='btn'
       style={{
         backgroundColor: props.bgColor ? "#DA552F" : "white",
@@ -11,7 +11,7 @@ const Button = (props) => {
       }}
     >
       {props.children}
-    </button>
+    </a>
   );
 };
 
