@@ -21,7 +21,7 @@ const Header = () => {
 
         <div className='user-config-container'>
           {user ? (
-            <div>
+            <>
               <p className='user-name'>Hola: {user.displayName}</p>
               <Button
                 type='button'
@@ -30,7 +30,7 @@ const Header = () => {
               >
                 Cerrar sesion
               </Button>
-            </div>
+            </>
           ) : (
             <>
               <Link href='/login'>
