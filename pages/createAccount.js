@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/layout/Layout";
-
+import Router from "next/router";
 import firebase from "../firebase";
 
 // validaciones
@@ -24,11 +24,9 @@ const CreateAccount = () => {
   async function createAccount() {
     try {
       await firebase.register(name, email, password);
+      Router.push("/");
     } catch (error) {
-      console.log(
-        "Hubo un error al crear el usuario",
-        error.localizedDescription
-      );
+      console.log("Hubo un error al crear el usuario", error.message);
       setError(error.message);
     }
   }
