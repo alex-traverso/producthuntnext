@@ -18,7 +18,7 @@ export default function validateCreateProduct(values) {
     errors.url = "URL mal formateada o no válida";
   }
 
-  // validar descripcionS
+  // validar descripcion
   if (!values.description) {
     errors.description = "Agrega una descripción de tu producto";
   }

@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Layout from "../components/layout/Layout";
 
 import firebase from "../firebase";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import Router from "next/router";
 
 // validaciones
 import useValidation from "../hooks/useValidation";
 import validateCreateProduct from "../validation/validateCreateProduct";
+import { FirebaseContext } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 const INITIAL_STATE = {
   name: "",
@@ -17,11 +26,94 @@ const INITIAL_STATE = {
 
 const NewProduct = () => {
   const [error, setError] = useState(false);
+  const [task, setTask] = useState(null);
+  const [imgURL, setImgURL] = useState(null);
 
   const { values, errors, handleChange, handleSubmit, handleBlur } =
-    useValidation(INITIAL_STATE, validateCreateProduct, createAccount);
+    useValidation(INITIAL_STATE, validateCreateProduct, createProduct);
 
   const { name, company, image, url, description } = values;
+
+  //context con las operaciones crud de firebase
+  const { user, firebase } = useContext(FirebaseContext);
+
+  async function createProduct() {
+    //si el usuario no esta autenticado llevar al login
+    if (!user) {
+      Router.push("/login");
+    }
+    //crear el objeto de nuevo producto
+    const product = {
+      name,
+      company,
+      url,
+      image: imgURL,
+      description,
+      votes: 0,
+      comments: [],
+      createAt: Date.now(),
+    };
+
+    //insertarlo en la base de datos
+    await addDoc(collection(firebase.db, "products"), product);
+    return Router.push("/");
+  }
+
+  useEffect(() => {
+    if (task) {
+      //Progreso
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        //En caso de error
+        (error) => {
+          switch (error.code) {
+            case "storage/unauthorized":
+              // User doesn't have permission to access the object
+              break;
+            case "storage/canceled":
+              // User canceled the upload
+              break;
+            // ...
+            case "storage/unknown":
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        //Proceso completado
+        () => {
+          getDownloadURL(task.snapshot.ref).then((downloadURL) => {
+            setImgURL(downloadURL);
+            console.log("File available at", downloadURL);
+          });
+        }
+      );
+    }
+  }, [task]);
+
+  const uploadImage = (file) => {
+    const storageRef = ref(firebase.storage, `/posts ${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    return uploadTask;
+  };
+
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    const task = uploadImage(file);
+    setTask(task);
+  };
 
   async function createAccount() {
     try {
@@ -82,8 +174,9 @@ const NewProduct = () => {
                   type='file'
                   id='image'
                   name='image'
-                  value={image}
-                  onChange={handleChange}
+                  onChange={(file) => {
+                    handleUpload(file);
+                  }}
                   onBlur={handleBlur}
                 />
               </div>
@@ -93,6 +186,7 @@ const NewProduct = () => {
               <div className='form-field'>
                 <label htmlFor='url'>URL</label>
                 <input
+                  placeholder='URL del producto'
                   type='url'
                   id='url'
                   name='url'
@@ -126,9 +220,9 @@ const NewProduct = () => {
               ) : null}
             </fieldset>
 
-            {error ? (
+            {/*  {error ? (
               <div className='error-message text-center'>{error}</div>
-            ) : null}
+            ) : null} */}
 
             <input className='form-btn' type='submit' value='Crear Producto' />
           </form>

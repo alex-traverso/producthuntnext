@@ -1,5 +1,7 @@
 import app from "firebase/compat/app";
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "@firebase/storage";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -15,8 +17,11 @@ class Firebase {
     if (!app.apps.length) {
       const app = initializeApp(firebaseConfig);
       this.auth = getAuth();
+      this.db = getFirestore(app);
+      this.storage = getStorage(this.app);
     }
   }
+
   //reigstrar el usuario
   async register(name, email, password) {
     const newUser = await createUserWithEmailAndPassword(
