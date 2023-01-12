@@ -2,9 +2,9 @@
 import React from "react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { es } from "date-fns/locale";
+import Link from "next/link";
 
 const ProductDetail = ({ product }) => {
-  console.log(product);
   const {
     id,
     createdAt,
@@ -24,7 +24,9 @@ const ProductDetail = ({ product }) => {
             <img className='product-img' src={image} alt={name} />
           </div>
           <div>
-            <a className='product-title'>{name}</a>
+            <Link legacyBehavior href='/products/[id]' as={`/products/${id}`}>
+              <a className='product-title'>{name}</a>
+            </Link>
             <p className='product-description'>{description}</p>
             <div className='comments-container'>
               <div className='product-comments'>

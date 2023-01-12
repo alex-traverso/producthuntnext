@@ -248,6 +248,8 @@ textarea {
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
+  text-decoration: none;
+  color: black;
 }
 
 .product-title:hover {
