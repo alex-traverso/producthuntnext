@@ -51,7 +51,7 @@ const NewProduct = () => {
       description,
       votes: 0,
       comments: [],
-      createAt: Date.now(),
+      createdAt: Date.now(),
     };
 
     //insertarlo en la base de datos
