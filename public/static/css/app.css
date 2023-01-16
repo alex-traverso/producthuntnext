@@ -62,7 +62,6 @@ a {
 
 #product-title {
   margin-top: 2rem;
-  text-align: center;
 }
 
 .header-container {
@@ -92,10 +91,12 @@ a {
 .btn {
   font-family: "Roboto", sans-serif;
   font-weight: 700;
+  display: block;
   text-transform: uppercase;
   border: 1px solid #d1d1d1;
   padding: 0.6rem 2rem;
-  margin-right: 1rem;
+  text-align: center;
+  margin: 2rem auto;
   cursor: pointer;
 }
 
@@ -339,6 +340,10 @@ textarea {
   font-weight: 700;
 }
 
+.product-votes-container {
+  margin-top: 3rem;
+}
+
 .error-title {
   margin-top: 5rem;
   text-align: center;
@@ -363,6 +368,10 @@ textarea {
 
 .comments-title {
   margin: 2rem 0;
+}
+
+.product-comment-form {
+  margin: 0;
 }
 
 /* MEDIA QUERYS */

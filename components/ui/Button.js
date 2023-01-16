@@ -5,6 +5,8 @@ const Button = (props) => {
     <a
       onClick={props.onClick}
       className='btn'
+      href={props.href}
+      target={props.target}
       style={{
         backgroundColor: props.bgColor ? "#DA552F" : "white",
         color: props.bgColor ? "white" : "black",

@@ -8,6 +8,7 @@ import Error404 from "../../components/layout/404";
 import Spinner from "../../components/ui/Spinner";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { es } from "date-fns/locale";
+import Button from "../../components/ui/Button";
 
 const Product = () => {
   //state del componente
@@ -20,7 +21,7 @@ const Product = () => {
   } = Router;
 
   //Context del firebase
-  const { firebase } = useContext(FirebaseContext);
+  const { firebase, user } = useContext(FirebaseContext);
 
   useEffect(() => {
     if (id) {
@@ -41,8 +42,17 @@ const Product = () => {
   /* {
   Object.keys(product).length === 0 ? <Spinner /> : null;
 } */
-  const { createdAt, company, description, name, image, url, votes, comments } =
-    product;
+  const {
+    createdAt,
+    company,
+    description,
+    name,
+    image,
+    url,
+    votes,
+    comments,
+    creator,
+  } = product;
 
   return (
     <Layout>
@@ -60,27 +70,36 @@ const Product = () => {
                   {formatDistanceToNow(new Date(createdAt), { locale: es })}
                 </p>
               ) : null}
+              {creator ? (
+                <p>
+                  <strong>Por: {creator.name}</strong> de {company}
+                </p>
+              ) : null}
               <img src={image} alt={name} />
               <p>{description}</p>
 
-              <h2>Agrega tu comentario</h2>
-              <form>
-                <fieldset>
-                  <div className='form-field'>
-                    <label htmlFor='name'>Comentario</label>
-                    <input
-                      type='text'
-                      name='message'
-                      placeholder='Comentario'
-                    />
-                  </div>
-                  <input
-                    className='form-btn'
-                    type='submit'
-                    value='Agregar un comentario'
-                  />
-                </fieldset>
-              </form>
+              {user && (
+                <>
+                  <h2>Agrega tu comentario</h2>
+                  <form className='product-comment-form'>
+                    <fieldset>
+                      <div className='form-field'>
+                        <label htmlFor='name'>Comentario</label>
+                        <input
+                          type='text'
+                          name='message'
+                          placeholder='Comentario'
+                        />
+                      </div>
+                      <input
+                        className='form-btn'
+                        type='submit'
+                        value='Agregar un comentario'
+                      />
+                    </fieldset>
+                  </form>
+                </>
+              )}
               <h2 className='comments-title'>Comentarios</h2>
               {/* {comments.map((comment) => {
                 <li>
@@ -89,7 +108,20 @@ const Product = () => {
                 </li>;
               })} */}
             </div>
-            <aside>2</aside>
+            <aside>
+              <Button target='_blank' href={url} bgColor='true'>
+                Visitar la URL
+              </Button>
+
+              <div className='product-votes-container'>
+                {user && (
+                  <Button target='_blank' href={url}>
+                    Votar
+                  </Button>
+                )}
+                <p className='text-center'>{votes} Votos</p>
+              </div>
+            </aside>
           </div>
         </div>
       </>
