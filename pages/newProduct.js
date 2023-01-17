@@ -59,6 +59,7 @@ const NewProduct = () => {
         id: user.uid,
         name: user.displayName,
       },
+      hasVoted: [],
     };
 
     console.log(product);
