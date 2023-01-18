@@ -2,13 +2,14 @@
 import { useEffect, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { FirebaseContext } from "../../firebase";
-import { getDoc, doc, setDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 import Layout from "../../components/Layout/Layout";
 import Error404 from "../../components/layout/404";
 import Spinner from "../../components/ui/Spinner";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { es } from "date-fns/locale";
 import Button from "../../components/ui/Button";
+import Image from "next/image";
 
 const Product = () => {
   //state del componente
@@ -43,9 +44,6 @@ const Product = () => {
     }
   }, [id]);
 
-  /* {
-  Object.keys(product).length === 0 ? <Spinner /> : null;
-} */
   const {
     createdAt,
     company,
@@ -88,6 +86,8 @@ const Product = () => {
     });
     setConsultDB(true);
   };
+
+  const src = image;
 
   const commentChange = (e) => {
     setComment({
@@ -135,7 +135,29 @@ const Product = () => {
     setConsultDB(true);
   };
 
-  if (Object.keys(product).length === 0 && !error) return <Spinner />;
+  //funcion que revisa que el creador del producto sea el mismo que esta autenticado
+  const canDelete = () => {
+    if (!user) return false;
+    if (creator.id === user.uid) {
+      return true;
+    }
+  };
+
+  const deleteProduct = async () => {
+    if (!user) {
+      return Router.push("/login");
+    }
+    if (creator.id !== user.uid) {
+      return Router.push("/");
+    }
+    try {
+      const productRef = doc(firebase.db, "products", id);
+      await deleteDoc(productRef);
+      Router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Layout>
@@ -144,9 +166,9 @@ const Product = () => {
           <Error404 />
         ) : (
           <div id='container'>
+            {Object.keys(product).length === 0 && !error ? <Spinner /> : null}
             <h1 id='product-title'>{product.name}</h1>
             <div className='product-container-id'>
-              {Object.keys(product).length === 0 ? <Spinner /> : null}
               <div>
                 {createdAt ? (
                   <p>
@@ -159,7 +181,18 @@ const Product = () => {
                     <strong>Por: {creator.name}</strong> de {company}
                   </p>
                 ) : null}
-                <img className='product-img-id' src={image} alt={name} />
+
+                <div className='product-img-id-container'>
+                  <Image
+                    className='product-img-id'
+                    loader={() => src}
+                    src={src}
+                    alt={name}
+                    width={700}
+                    height={450}
+                  />
+                </div>
+                {/* <img  src={image} alt={name} /> */}
                 <p>{description}</p>
 
                 {user && (
@@ -170,7 +203,7 @@ const Product = () => {
                       onSubmit={addComment}
                     >
                       <fieldset className='fieldset-product-id'>
-                        <div className='form-field'>
+                        <div className='form-field input-product-id'>
                           <input
                             type='text'
                             name='message'
@@ -190,7 +223,7 @@ const Product = () => {
                 <h2 className='comments-title'>Comentarios</h2>
 
                 {comments === undefined ? (
-                  <p>No comments yet</p>
+                  <p>No hay comentarios</p>
                 ) : (
                   <>
                     <ul>
@@ -226,6 +259,15 @@ const Product = () => {
                   <p className='text-center'>{votes} Votos</p>
                 </div>
               </aside>
+            </div>
+            <div className='delete-btn-container'>
+              {creator === undefined ? null : (
+                <>
+                  {canDelete() && (
+                    <Button onClick={deleteProduct}>Borrar producto</Button>
+                  )}
+                </>
+              )}
             </div>
           </div>
         )}

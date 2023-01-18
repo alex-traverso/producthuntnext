@@ -39,7 +39,11 @@ const CreateAccount = () => {
       <Layout>
         <>
           <h1 className='create-account-title text-center'>Crear Cuenta</h1>
-          <form onSubmit={handleSubmit} noValidate>
+          <form
+            className='form-create-account'
+            onSubmit={handleSubmit}
+            noValidate
+          >
             <div className='form-field'>
               <label htmlFor='name'>Nombre</label>
               <input

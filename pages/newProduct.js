@@ -231,7 +231,7 @@ const NewProduct = () => {
             ) : null} */}
 
               <input
-                className='form-btn'
+                className='form-btn btn-new-product'
                 type='submit'
                 value='Crear Producto'
               />

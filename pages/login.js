@@ -36,7 +36,7 @@ const Login = () => {
       <Layout>
         <>
           <h1 className='create-account-title text-center'>Iniciar Sesión</h1>
-          <form onSubmit={handleSubmit} noValidate>
+          <form className='form-login' onSubmit={handleSubmit} noValidate>
             {errors.name && (
               <div className='error-message text-center'>{errors.name}</div>
             )}
