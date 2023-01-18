@@ -16,6 +16,7 @@ const Product = () => {
   const [consultDB, setConsultDB] = useState(true);
   const [error, setError] = useState(false);
   const [comment, setComment] = useState({});
+
   //Routing para obtener el id actual
   const Router = useRouter();
   const {
@@ -26,21 +27,22 @@ const Product = () => {
   const { firebase, user } = useContext(FirebaseContext);
 
   useEffect(() => {
-    if (id) {
+    if (id && consultDB) {
       const getProduct = async () => {
         const productQuery = doc(firebase.db, "products", id);
         const product = await getDoc(productQuery);
         if (product.exists()) {
           setProduct(product.data());
+          setConsultDB(false);
         } else {
           setError(true);
+          setConsultDB(false);
         }
       };
       getProduct();
     }
-  }, [id, product]);
+  }, [id]);
 
-  /* if (Object.keys(product).length === 0) return <Spinner />; */
   /* {
   Object.keys(product).length === 0 ? <Spinner /> : null;
 } */
@@ -94,6 +96,13 @@ const Product = () => {
     });
   };
 
+  //Identifica si el comentario es del creador del producto
+  const isCreator = (id) => {
+    if (creator.id === id) {
+      return true;
+    }
+  };
+
   //Crear comentario
   const addComment = (e) => {
     e.preventDefault();
@@ -126,88 +135,100 @@ const Product = () => {
     setConsultDB(true);
   };
 
+  if (Object.keys(product).length === 0 && !error) return <Spinner />;
+
   return (
     <Layout>
       <>
-        {error ? <Error404 /> : null}
+        {error ? (
+          <Error404 />
+        ) : (
+          <div id='container'>
+            <h1 id='product-title'>{product.name}</h1>
+            <div className='product-container-id'>
+              {Object.keys(product).length === 0 ? <Spinner /> : null}
+              <div>
+                {createdAt ? (
+                  <p>
+                    Publicado hace{" "}
+                    {formatDistanceToNow(new Date(createdAt), { locale: es })}
+                  </p>
+                ) : null}
+                {creator ? (
+                  <p>
+                    <strong>Por: {creator.name}</strong> de {company}
+                  </p>
+                ) : null}
+                <img className='product-img-id' src={image} alt={name} />
+                <p>{description}</p>
 
-        <div id='container'>
-          <h1 id='product-title'>{product.name}</h1>
-          <div className='product-container-id'>
-            {Object.keys(product).length === 0 ? <Spinner /> : null}
-            <div>
-              {createdAt ? (
-                <p>
-                  Publicado hace{" "}
-                  {formatDistanceToNow(new Date(createdAt), { locale: es })}
-                </p>
-              ) : null}
-              {creator ? (
-                <p>
-                  <strong>Por: {creator.name}</strong> de {company}
-                </p>
-              ) : null}
-              <img src={image} alt={name} />
-              <p>{description}</p>
-
-              {user && (
-                <>
-                  <h2>Agrega tu comentario</h2>
-                  <form className='product-comment-form' onSubmit={addComment}>
-                    <fieldset>
-                      <div className='form-field'>
-                        <label htmlFor='name'>Comentario</label>
+                {user && (
+                  <>
+                    <h2>Agrega tu comentario</h2>
+                    <form
+                      className='product-comment-form'
+                      onSubmit={addComment}
+                    >
+                      <fieldset className='fieldset-product-id'>
+                        <div className='form-field'>
+                          <input
+                            type='text'
+                            name='message'
+                            placeholder='Comentario'
+                            onChange={commentChange}
+                          />
+                        </div>
                         <input
-                          type='text'
-                          name='message'
-                          placeholder='Comentario'
-                          onChange={commentChange}
+                          className='form-btn'
+                          type='submit'
+                          value='Agregar un comentario'
                         />
-                      </div>
-                      <input
-                        className='form-btn'
-                        type='submit'
-                        value='Agregar un comentario'
-                      />
-                    </fieldset>
-                  </form>
-                </>
-              )}
-              <h2 className='comments-title'>Comentarios</h2>
+                      </fieldset>
+                    </form>
+                  </>
+                )}
+                <h2 className='comments-title'>Comentarios</h2>
 
-              {comments === undefined ? (
-                <p>No comments yet</p>
-              ) : (
-                <>
-                  <ul>
-                    {comments.length === 0 ? <p>No hay comentarios</p> : null}
-                  </ul>
-                  <ul>
-                    {comments.map((comment, i) => (
-                      <li key={`${comment.userId}-${i}`}>
-                        <p>{comment.message}</p>
-                        <p>
-                          Escrito por:
-                          <span> {comment.userName}</span>
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </div>
-            <aside>
-              <Button target='_blank' href={url} bgColor='true'>
-                Visitar la URL
-              </Button>
-
-              <div className='product-votes-container'>
-                {user ? <Button onClick={voteProduct}>Votar</Button> : null}
-                <p className='text-center'>{votes} Votos</p>
+                {comments === undefined ? (
+                  <p>No comments yet</p>
+                ) : (
+                  <>
+                    <ul>
+                      {comments.length === 0 ? <p>No hay comentarios</p> : null}
+                    </ul>
+                    <ul>
+                      {comments.map((comment, i) => (
+                        <li className='comments' key={`${comment.userId}-${i}`}>
+                          <p>{comment.message}</p>
+                          <p>
+                            Escrito por:
+                            <span className='font-bold'>
+                              {" "}
+                              {comment.userName}
+                            </span>
+                          </p>
+                          {isCreator(comment.userId) && (
+                            <p className='is-creator'>Es creador</p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
-            </aside>
+              <aside>
+                <Button target='_blank' href={url} bgColor='true'>
+                  Visitar la URL
+                </Button>
+
+                <div className='product-votes-container'>
+                  {user ? <Button onClick={voteProduct}>Votar</Button> : null}
+                  <p className='text-center'>{votes} Votos</p>
+                </div>
+              </aside>
+            </div>
           </div>
-        </div>
+        )}
       </>
     </Layout>
   );

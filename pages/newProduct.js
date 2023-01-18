@@ -133,7 +133,11 @@ const NewProduct = () => {
         ) : (
           <>
             <h1 className='create-account-title text-center'>Nuevo Producto</h1>
-            <form onSubmit={handleSubmit} noValidate>
+            <form
+              className='new-product-form'
+              onSubmit={handleSubmit}
+              noValidate
+            >
               <fieldset>
                 <legend>Informacion general</legend>
                 <div className='form-field'>
