@@ -138,6 +138,7 @@ img {
 .products-list {
   background-color: #f3f3f3;
 }
+
 .container {
   max-width: 1200px;
   width: 95%;
@@ -152,6 +153,7 @@ img {
 .user-config-container {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .user-name {
@@ -401,6 +403,7 @@ textarea {
 .comments {
   border: 1px solid #e1e1e1;
   padding: 2rem;
+  width: 700px;
 }
 
 /* product id */

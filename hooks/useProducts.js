@@ -1,13 +1,10 @@
+import React, { useState, useContext, useEffect } from "react";
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useContext } from "react";
-import Layout from "../components/layout/Layout";
 import { FirebaseContext } from "../firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import ProductDetail from "../components/layout/ProductDetail";
 
-const Home = () => {
+export const useProducts = (order) => {
   const [products, setProducts] = useState([]);
-
   const { firebase } = useContext(FirebaseContext);
 
   useEffect(() => {
@@ -15,8 +12,9 @@ const Home = () => {
     const obtainProducts = () => {
       const querySnapshot = query(
         collection(firebase.db, "products"),
-        orderBy("createdAt", "desc")
+        orderBy(order, "desc")
       );
+
       onSnapshot(querySnapshot, ({ docs }) => {
         const newProducts = docs.map((doc) => {
           const data = doc.data();
@@ -33,21 +31,7 @@ const Home = () => {
     obtainProducts();
   }, []);
 
-  return (
-    <div>
-      <Layout>
-        <div className='product-list'>
-          <div className='products-container'>
-            <ul className='bg-white '>
-              {products.map((product, id) => (
-                <ProductDetail key={product.id} product={product} />
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Layout>
-    </div>
-  );
+  return {
+    products,
+  };
 };
-
-export default Home;
