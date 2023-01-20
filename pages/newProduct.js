@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import Layout from "../components/layout/Layout";
-
 import firebase from "../firebase";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
+  doc,
 } from "firebase/storage";
 import Router from "next/router";
 
@@ -112,7 +112,8 @@ const NewProduct = () => {
   }, [task]);
 
   const uploadImage = (file) => {
-    const storageRef = ref(firebase.storage, `/posts ${file.name}`);
+    const randomId = Math.random().toString(30).substring(2);
+    const storageRef = ref(firebase.storage, `/posts ${(file.name, randomId)}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
     return uploadTask;
   };
