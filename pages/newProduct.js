@@ -62,8 +62,6 @@ const NewProduct = () => {
       hasVoted: [],
     };
 
-    console.log(product);
-
     //insertarlo en la base de datos
     await addDoc(collection(firebase.db, "products"), product);
     return Router.push("/");
