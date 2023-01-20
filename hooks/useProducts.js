@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { FirebaseContext } from "../firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
-export const useProducts = (order) => {
+const useProducts = (order) => {
   const [products, setProducts] = useState([]);
   const { firebase } = useContext(FirebaseContext);
 
@@ -31,7 +31,7 @@ export const useProducts = (order) => {
     obtainProducts();
   }, []);
 
-  return {
-    products,
-  };
+  return { products };
 };
+
+export default useProducts;

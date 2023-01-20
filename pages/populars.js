@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 import Layout from "../components/layout/Layout";
-import { FirebaseContext } from "../firebase";
 import useProducts from "../hooks/useProducts";
 import ProductDetail from "../components/layout/ProductDetail";
 
