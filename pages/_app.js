@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import firebase from "../firebase/firebase";
 import { FirebaseContext } from "../firebase";
 import useAutentication from "../hooks/useAutentication";
+import { app } from "../public/static/css/app.css";
 
 const MyApp = ({ Component, pageProps }) => {
   const [showChild, setShowChild] = useState(false);
