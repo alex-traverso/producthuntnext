@@ -3,7 +3,7 @@ import { useEffect, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { FirebaseContext } from "../../firebase";
 import { getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
-import Layout from "../../components/Layout/Layout";
+import Layout from "../../components/layout/Layout";
 import Error404 from "../../components/layout/404";
 import Spinner from "../../components/ui/Spinner";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
