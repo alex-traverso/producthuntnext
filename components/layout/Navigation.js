@@ -3,14 +3,22 @@ import Link from "next/link";
 import { FirebaseContext } from "../../firebase";
 
 const Navigation = () => {
-  const { user, firebase } = useContext(FirebaseContext);
-  return (
-    <nav>
-      <Link href='/'>Inicio</Link>
-      <Link href='/populars'>Populares</Link>
-      {user ? <Link href='/newProduct'>Nuevo producto</Link> : null}
-    </nav>
-  );
+	const { user, firebase } = useContext(FirebaseContext);
+	return (
+		<nav>
+			<Link href="/" className="nav-item">
+				Inicio
+			</Link>
+			<Link href="/populars" className="nav-item">
+				Populares
+			</Link>
+			{user ? (
+				<Link href="/newProduct" className="nav-item">
+					Nuevo producto
+				</Link>
+			) : null}
+		</nav>
+	);
 };
 
 export default Navigation;

@@ -192,7 +192,6 @@ const Product = () => {
                     height={450}
                   />
                 </div>
-                {/* <img  src={image} alt={name} /> */}
                 <p>{description}</p>
 
                 {user && (

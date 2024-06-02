@@ -15,6 +15,7 @@ const INITIAL_STATE = {
 
 const Login = () => {
   const [error, setError] = useState(false);
+  const [data, setData] = useState({});
 
   const { values, errors, handleChange, handleSubmit, handleBlur } =
     useValidation(INITIAL_STATE, validateLogIn, logIn);
